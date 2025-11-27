@@ -1,6 +1,5 @@
-name = "your-worker-name" # 将此替换为您在 Cloudflare 中设置的 Worker 名称
+name = "website" # 替换为您在 Cloudflare 中设置的 Worker 名称
 compatibility_date = "2025-11-27"
-main = "src/index.ts" # 这是一个占位符，因为静态部署通常不需要 main 文件
 
-[site]
-bucket = "." # 指向您的静态文件所在的根目录
+[assets]
+bucket = "." # 指向您的静态文件所在的根目录（例如：您的 index.html 所在的目录）
