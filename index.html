@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的第一个网站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 欢迎来到我的第一个网站！</h1>
+        <p>这个网站是通过 Cloudflare Pages 搭建的，是不是很酷？</p>
+        <p>我现在是一个网站站长啦！</p>
+        <p><strong>创建时间：</strong> <span id="date"></span></p>
+    </div>
+
+    <script>
+        // 显示当前日期
+        document.getElementById('date').textContent = new Date().toLocaleDateString();
+    </script>
+</body>
+</html>
