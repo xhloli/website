@@ -1,5 +1,5 @@
-name = "website" # 替换为您在 Cloudflare 中设置的 Worker 名称
-compatibility_date = "2025-11-27"
+name = "redirect-site"
+compatibility_date = "2023-10-30"
 
-[assets]
-directory = "." # 使用新版字段名指向您的静态文件所在的根目录
+[env.production]
+workers_dev = false
