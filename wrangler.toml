@@ -1,4 +1,4 @@
-# wrangler.toml
+name = "website"# wrangler.toml
 compatibility_date = "2025-11-28"
 
 [assets]
