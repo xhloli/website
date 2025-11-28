@@ -1,5 +1,8 @@
-name = "redirect-site"
-compatibility_date = "2023-10-30"
+# wrangler.toml
+compatibility_date = "2025-11-28"
+
+[assets]
+directory = "./"  # 将当前目录下的所有文件作为静态资产上传
 
 [env.production]
 workers_dev = false
