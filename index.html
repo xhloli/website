@@ -3,141 +3,464 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>正在重定向...</title>
-    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>我的云日记本</title>
     <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #f8fafc;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
         }
         
         .container {
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        
-        p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        
-        .redirect-info {
-            background: rgba(255, 255, 255, 0.15);
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
             border-radius: 12px;
-            padding: 20px;
-            margin: 25px 0;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
         
-        .path {
-            font-weight: bold;
-            font-size: 1.3rem;
-            color: #ffcc00;
-        }
-        
-        .loader {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-            margin: 20px 0;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .manual-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
+        header {
+            background: var(--primary);
             color: white;
-            text-decoration: none;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .app-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: white;
+            border-bottom: 3px solid var(--primary);
             font-weight: 600;
-            transition: all 0.3s ease;
         }
         
-        .manual-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px);
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            min-height: 500px;
         }
         
-        .footer {
-            margin-top: 40px;
-            font-size: 0.9rem;
-            opacity: 0.7;
+        .tab-content.active {
+            display: block;
+        }
+        
+        .editor-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        .editor-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        input, textarea {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        
+        .image-upload {
+            border: 2px dashed #d1d5db;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            display: none;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .diary-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .diary-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .diary-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .diary-header {
+            display: flex;
+            justify-content: between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+        
+        .diary-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .diary-time {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .diary-content {
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .diary-image {
+            max-width: 200px;
+            border-radius: 6px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .trash-item {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>正在重定向</h1>
-        <p>您即将被自动重定向到目标网站</p>
+        <header>
+            <h1 class="app-title">📖 我的云日记本</h1>
+            <p>记录生活点滴，随时随地上传图片</p>
+        </header>
         
-        <div class="redirect-info">
-            <p>从: <span class="path" id="from-path">a.com/...</span></p>
-            <p>到: <span class="path" id="to-path">b.com/...</span></p>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('write')">写日记</button>
+            <button class="tab-btn" onclick="switchTab('diaries')">所有日记</button>
+            <button class="tab-btn" onclick="switchTab('trash')">垃圾箱</button>
         </div>
         
-        <div class="loader"></div>
-        <p>如果页面没有自动跳转，请点击下方链接</p>
-        <a href="#" id="manual-link" class="manual-link">手动跳转</a>
+        <!-- 写日记标签页 -->
+        <div id="write" class="tab-content active">
+            <div class="editor-container">
+                <div class="editor-form">
+                    <div class="form-group">
+                        <label for="diaryTitle">标题</label>
+                        <input type="text" id="diaryTitle" placeholder="给日记起个标题...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="diaryContent">内容</label>
+                        <textarea id="diaryContent" placeholder="今天发生了什么..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>上传图片</label>
+                        <div class="image-upload" onclick="document.getElementById('imageInput').click()">
+                            <p>点击上传图片 📷</p>
+                            <img id="imagePreview" class="image-preview" alt="图片预览">
+                        </div>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="previewImage(event)">
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="saveDiary()">保存日记</button>
+                </div>
+                
+                <div>
+                    <h3>📝 使用提示</h3>
+                    <ul style="margin-top: 1rem; line-height: 1.8; color: #6b7280;">
+                        <li>日记会自动保存到云端</li>
+                        <li>支持 JPG、PNG 格式图片</li>
+                        <li>删除的日记会在垃圾箱保留30天</li>
+                        <li>所有数据通过 Cloudflare 全球加速</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         
-        <div class="footer">
-            <p>本页面仅用于重定向目的，不包含任何内容</p>
+        <!-- 所有日记标签页 -->
+        <div id="diaries" class="tab-content">
+            <h2 style="margin-bottom: 1.5rem;">我的日记</h2>
+            <div id="diaryList" class="diary-list">
+                <!-- 日记列表将通过JavaScript动态生成 -->
+                <div class="empty-state">
+                    <p>还没有日记，开始写下第一篇吧！</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 垃圾箱标签页 -->
+        <div id="trash" class="tab-content">
+            <h2 style="margin-bottom: 1.5rem;">垃圾箱</h2>
+            <div id="trashList" class="diary-list">
+                <div class="empty-state">
+                    <p>垃圾箱是空的</p>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // 配置目标域名
-        const TARGET_DOMAIN = "b.com";
+        // 当前选中的图片数据
+        let currentImageData = null;
         
-        // 获取当前路径
-        const currentPath = window.location.pathname;
-        const targetUrl = `https://${TARGET_DOMAIN}${currentPath}`;
+        // 切换标签页
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (tabName === 'diaries') {
+                loadDiaries();
+            } else if (tabName === 'trash') {
+                loadTrash();
+            }
+        }
         
-        // 更新显示信息
-        document.getElementById('from-path').textContent = window.location.hostname + currentPath;
-        document.getElementById('to-path').textContent = TARGET_DOMAIN + currentPath;
-        document.getElementById('manual-link').href = targetUrl;
+        // 预览图片
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImageData = e.target.result;
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = currentImageData;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
         
-        // 延迟3秒后重定向（给用户足够时间查看信息）
-        setTimeout(() => {
-            window.location.href = targetUrl;
-        }, 3000);
+        // 保存日记
+        async function saveDiary() {
+            const title = document.getElementById('diaryTitle').value;
+            const content = document.getElementById('diaryContent').value;
+            
+            if (!title || !content) {
+                alert('请填写标题和内容');
+                return;
+            }
+            
+            const diary = {
+                id: Date.now().toString(),
+                title,
+                content,
+                image: currentImageData,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                deleted: false
+            };
+            
+            try {
+                // 在实际部署中，这里会调用Cloudflare Worker API
+                // 暂时先保存到本地存储
+                saveToLocalStorage(diary);
+                
+                // 清空表单
+                document.getElementById('diaryTitle').value = '';
+                document.getElementById('diaryContent').value = '';
+                document.getElementById('imagePreview').style.display = 'none';
+                currentImageData = null;
+                
+                alert('日记保存成功！');
+                switchTab('diaries');
+            } catch (error) {
+                alert('保存失败：' + error.message);
+            }
+        }
         
-        // 可选：立即重定向（无延迟）
-        // window.location.href = targetUrl;
+        // 本地存储函数（开发环境使用）
+        function saveToLocalStorage(diary) {
+            const diaries = JSON.parse(localStorage.getItem('diaries') || '[]');
+            diaries.push(diary);
+            localStorage.setItem('diaries', JSON.stringify(diaries));
+        }
+        
+        function getFromLocalStorage() {
+            return JSON.parse(localStorage.getItem('diaries') || '[]');
+        }
+        
+        // 加载日记列表
+        function loadDiaries() {
+            const diaries = getFromLocalStorage().filter(d => !d.deleted);
+            const container = document.getElementById('diaryList');
+            
+            if (diaries.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>还没有日记，开始写下第一篇吧！</p></div>';
+                return;
+            }
+            
+            container.innerHTML = diaries.map(diary => `
+                <div class="diary-card">
+                    <div class="diary-header">
+                        <div>
+                            <h3 class="diary-title">${diary.title}</h3>
+                            <div class="diary-time">
+                                创建：${new Date(diary.createdAt).toLocaleString()} |
+                                更新：${new Date(diary.updatedAt).toLocaleString()}
+                            </div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-danger" onclick="moveToTrash('${diary.id}')">删除</button>
+                        </div>
+                    </div>
+                    <div class="diary-content">${diary.content}</div>
+                    ${diary.image ? `<img src="${diary.image}" class="diary-image" alt="日记图片">` : ''}
+                </div>
+            `).join('');
+        }
+        
+        // 加载垃圾箱
+        function loadTrash() {
+            const trash = getFromLocalStorage().filter(d => d.deleted);
+            const container = document.getElementById('trashList');
+            
+            if (trash.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>垃圾箱是空的</p></div>';
+                return;
+            }
+            
+            container.innerHTML = trash.map(diary => `
+                <div class="diary-card trash-item">
+                    <div class="diary-header">
+                        <div>
+                            <h3 class="diary-title">${diary.title}</h3>
+                            <div class="diary-time">
+                                删除时间：${new Date(diary.updatedAt).toLocaleString()}
+                            </div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-success" onclick="restoreDiary('${diary.id}')">恢复</button>
+                            <button class="btn btn-danger" onclick="deletePermanently('${diary.id}')">永久删除</button>
+                        </div>
+                    </div>
+                    <div class="diary-content">${diary.content}</div>
+                </div>
+            `).join('');
+        }
+        
+        // 移动到垃圾箱
+        function moveToTrash(id) {
+            if (confirm('确定要删除这篇日记吗？')) {
+                const diaries = getFromLocalStorage();
+                const index = diaries.findIndex(d => d.id === id);
+                if (index !== -1) {
+                    diaries[index].deleted = true;
+                    diaries[index].updatedAt = new Date().toISOString();
+                    localStorage.setItem('diaries', JSON.stringify(diaries));
+                    loadDiaries();
+                }
+            }
+        }
+        
+        // 恢复日记
+        function restoreDiary(id) {
+            const diaries = getFromLocalStorage();
+            const index = diaries.findIndex(d => d.id === id);
+            if (index !== -1) {
+                diaries[index].deleted = false;
+                diaries[index].updatedAt = new Date().toISOString();
+                localStorage.setItem('diaries', JSON.stringify(diaries));
+                loadTrash();
+            }
+        }
+        
+        // 永久删除
+        function deletePermanently(id) {
+            if (confirm('确定要永久删除这篇日记吗？此操作不可恢复！')) {
+                const diaries = getFromLocalStorage();
+                const filtered = diaries.filter(d => d.id !== id);
+                localStorage.setItem('diaries', JSON.stringify(filtered));
+                loadTrash();
+            }
+        }
     </script>
 </body>
 </html>
