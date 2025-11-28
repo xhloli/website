@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正在重定向...</title>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .redirect-info {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .path {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #ffcc00;
+        }
+        
+        .loader {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin: 20px 0;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .manual-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .manual-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>正在重定向</h1>
+        <p>您即将被自动重定向到目标网站</p>
+        
+        <div class="redirect-info">
+            <p>从: <span class="path" id="from-path">a.com/...</span></p>
+            <p>到: <span class="path" id="to-path">b.com/...</span></p>
+        </div>
+        
+        <div class="loader"></div>
+        <p>如果页面没有自动跳转，请点击下方链接</p>
+        <a href="#" id="manual-link" class="manual-link">手动跳转</a>
+        
+        <div class="footer">
+            <p>本页面仅用于重定向目的，不包含任何内容</p>
+        </div>
+    </div>
+
+    <script>
+        // 配置目标域名
+        const TARGET_DOMAIN = "b.com";
+        
+        // 获取当前路径
+        const currentPath = window.location.pathname;
+        const targetUrl = `https://${TARGET_DOMAIN}${currentPath}`;
+        
+        // 更新显示信息
+        document.getElementById('from-path').textContent = window.location.hostname + currentPath;
+        document.getElementById('to-path').textContent = TARGET_DOMAIN + currentPath;
+        document.getElementById('manual-link').href = targetUrl;
+        
+        // 延迟3秒后重定向（给用户足够时间查看信息）
+        setTimeout(() => {
+            window.location.href = targetUrl;
+        }, 3000);
+        
+        // 可选：立即重定向（无延迟）
+        // window.location.href = targetUrl;
+    </script>
+</body>
+</html>
